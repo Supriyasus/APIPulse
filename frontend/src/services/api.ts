@@ -1,4 +1,11 @@
-const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000/api";
+let rawBase = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000/api";
+if (rawBase && !rawBase.endsWith("/api")) {
+  if (rawBase.endsWith("/")) {
+    rawBase = rawBase.slice(0, -1);
+  }
+  rawBase = rawBase + "/api";
+}
+const API_BASE = rawBase;
 
 
 export interface ApiTestResult {
