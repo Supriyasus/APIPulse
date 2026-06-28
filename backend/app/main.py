@@ -1,6 +1,8 @@
 # pyrefly: ignore [missing-import]
 import uvicorn
+# pyrefly: ignore [missing-import]
 from fastapi import FastAPI
+# pyrefly: ignore [missing-import]
 from fastapi.middleware.cors import CORSMiddleware
 from app.database.session import Base, engine
 from app.api.endpoints import router as api_router
@@ -14,7 +16,7 @@ except Exception as e:
     print(f"Error initializing database tables: {e}")
 
 app = FastAPI(
-    title="ChaosPulse API Backend",
+    title="APIPulse Backend",
     description="Resilience and observability analysis service.",
     version="1.0.0"
 )
@@ -42,7 +44,7 @@ app.include_router(api_router, prefix="/api")
 async def root():
     return {
         "status": "online",
-        "service": "ChaosPulse API Resilience Platform",
+        "service": "APIPulse Resilience Platform",
         "documentation": "/docs"
     }
 
