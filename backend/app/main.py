@@ -20,7 +20,11 @@ app = FastAPI(
 )
 
 # Enable CORS for local react development and production
-origins = [o.strip() for o in settings.cors_origins.split(",") if o.strip()]
+origins = []
+for o in settings.cors_origins.split(","):
+    cleaned = o.strip().strip('"').strip("'").rstrip("/")
+    if cleaned:
+        origins.append(cleaned)
 
 app.add_middleware(
     CORSMiddleware,
@@ -33,7 +37,7 @@ app.add_middleware(
 # Attach routes
 app.include_router(api_router, prefix="/api")
 
-@app.get("/")
+@app.api_route("/", methods=["GET", "HEAD"])
 async def root():
     return {
         "status": "online",
