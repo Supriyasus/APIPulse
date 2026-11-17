@@ -26,12 +26,12 @@ router = APIRouter()
 async def analyze_health(req: UrlAnalyzeRequest, request: Request, db: Session = Depends(get_db)):
     # 1. Check Rate Limit
     client_ip = request.client.host if request.client else "unknown"
-    if cache_service.check_rate_limit(client_ip, limit=20, window_seconds=60):
+    if await cache_service.check_rate_limit(client_ip, limit=20, window_seconds=60):
         raise HTTPException(status_code=429, detail="Rate limit exceeded. Try again in a minute.")
 
     # 2. Check Cache
     cache_key = f"health_cache:{req.url}"
-    cached_data = cache_service.get(cache_key)
+    cached_data = await cache_service.get(cache_key)
     if cached_data:
         # Return mock / cached model response matching structure
         # If cache expired or not found, we fetch new
@@ -57,7 +57,7 @@ async def analyze_health(req: UrlAnalyzeRequest, request: Request, db: Session =
         "headers": result.headers,
         "created_at": result.created_at.isoformat()
     }
-    cache_service.set(cache_key, serializable, expire_seconds=15)
+    await cache_service.set(cache_key, serializable, expire_seconds=15)
 
     return result
 
@@ -65,7 +65,7 @@ async def analyze_health(req: UrlAnalyzeRequest, request: Request, db: Session =
 async def load_test(req: LoadTestRequest, request: Request, db: Session = Depends(get_db)):
     # Check Rate Limit
     client_ip = request.client.host if request.client else "unknown"
-    if cache_service.check_rate_limit(client_ip, limit=10, window_seconds=60):
+    if await cache_service.check_rate_limit(client_ip, limit=10, window_seconds=60):
         raise HTTPException(status_code=429, detail="Rate limit exceeded. Load tests are resource-intensive.")
 
     if req.request_count not in [10, 50, 100]:

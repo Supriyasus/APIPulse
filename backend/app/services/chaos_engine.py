@@ -1,6 +1,7 @@
 import asyncio
 import time
 import random
+import httpx
 from sqlalchemy.orm import Session
 from app.models.models import ChaosRun
 
@@ -70,7 +71,7 @@ async def run_chaos_test(url: str, simulation_type: str, config: dict, db: Sessi
                     else:
                         error_count += 1
                     latencies.append(duration)
-                except (asyncio.TimeoutError, httpx_TimeoutException) as e:
+                except (asyncio.TimeoutError, httpx.TimeoutException) as e:
                     duration = (time.perf_counter() - start) * 1000.0
                     error_count += 1
                     timeout_errors += 1
@@ -238,10 +239,6 @@ async def run_chaos_test(url: str, simulation_type: str, config: dict, db: Sessi
     db.refresh(chaos_run)
     
     return chaos_run
-
-# Helper helper to get httpx.AsyncClient
-import httpx
-from httpx import TimeoutException
 
 def httpx_AsyncClient_wrapper():
     return httpx.AsyncClient(follow_redirects=True)

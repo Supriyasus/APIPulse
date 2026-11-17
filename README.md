@@ -36,34 +36,6 @@ The platform is designed with a high-tech dark matrix theme featuring green, gol
 
 ---
 
-## ⚙️ Project Structure
-
-```
-APIPulse/
-├── backend/               # FastAPI Application
-│   ├── app/               # Main Backend Logic
-│   │   ├── api/           # Router & Endpoints
-│   │   ├── database/      # DB Engine & Sessions
-│   │   ├── models/        # SQLAlchemy Models
-│   │   ├── schemas/       # Pydantic Request/Response Models
-│   │   ├── services/      # Business Logic (Chaos, Load Testing, SSL)
-│   │   └── config.py      # App configuration using pydantic-settings
-│   ├── pulse/             # Python Virtual Environment
-│   └── requirements.txt   # Backend Dependencies
-├── frontend/              # React Frontend Application
-│   ├── public/            # Static assets (glowing custom favicon.svg)
-│   ├── src/               # React Components and Styles
-│   │   ├── components/    # Tab Views (Analyzer, Chaos Lab, Load Testing, Reports)
-│   │   ├── index.css      # Core styles & Tailwind v4 Custom Theme Setup
-│   │   └── App.tsx        # Main layout and routing
-│   └── package.json       # Frontend Dependencies & Scripts
-├── docker/                # Containered Infrastructure
-│   └── docker-compose.yml # PostgreSQL & Redis service definitions
-└── .gitignore             # Workspace-level Git ignore settings
-```
-
----
-
 ## 🔌 Setup & Local Development
 
 Follow these steps to run the complete stack locally:
@@ -71,7 +43,7 @@ Follow these steps to run the complete stack locally:
 ### 1. Run Databases (Docker Compose)
 Ensure Docker is running, then spin up the PostgreSQL and Redis containers:
 ```bash
-docker compose -f docker/docker-compose.yml up -d
+docker compose up -d
 ```
 
 ### 2. Set Up the Backend
